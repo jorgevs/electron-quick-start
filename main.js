@@ -7,6 +7,7 @@ let mainWindow
 
 function createWindow () {
   // Create the browser window.
+  console.log(">>> Creating window")
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
