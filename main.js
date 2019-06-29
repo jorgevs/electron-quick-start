@@ -6,30 +6,46 @@ console.log(colors.rainbow('Hello world!'));
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let mainWindow;
+let mainWindow, secondaryWindow;
 
 function createWindow () {
   // Create the browser window.
   console.log(">>> Creating window");
-    mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+
+  mainWindow = new BrowserWindow({
+    width: 1000, height: 800,
     webPreferences: {nodeIntegration: true}
+  });
+  secondaryWindow = new BrowserWindow({
+    width: 600, height: 300,
+    webPreferences: {nodeIntegration: true},
+    parent: mainWindow,
+    modal: true,
+    show: false
   });
 
   // and load the index.html of the app.
   mainWindow.loadFile('index.html');
+  secondaryWindow.loadFile('secondary.html');
+
+  setTimeout( () => {
+    secondaryWindow.show();
+    setTimeout( () => {
+      secondaryWindow.close();
+      secondaryWindow = null;
+    }, 3000)
+  }, 2000)
 
   // Open the DevTools. Remove for PRODUCTION!!
-  mainWindow.webContents.openDevTools();
+  //mainWindow.webContents.openDevTools();
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
     mainWindow = null
   })
+  /*secondaryWindow.on('closed', function () {
+    secondaryWindow = null
+  })*/
 }
 
 // This method will be called when Electron has finished
